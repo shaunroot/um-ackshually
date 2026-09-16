@@ -1,0 +1,24 @@
+# Secrets — never commit
+config.json
+
+# Runtime state + logs
+state/*.json
+logs/
+*.log
+*.pid
+*.pid.lock
+
+# Dependencies
+vendor/
+composer.lock
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*~
+*.bak
+*.tmp
+*.swp
+.vscode/
+.idea/
+.claude/

@@ -1,0 +1,7 @@
+{
+    "name": "shaunroot/um-ackshually",
+    "description": "Reddit comment auto-responder bot (um-ackshually).",
+    "require": {
+        "guzzlehttp/guzzle": "^7.9"
+    }
+}

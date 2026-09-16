@@ -1,0 +1,10 @@
+{
+  "_comment": "Bootstrap only. Reddit/OpenAI creds and tunables are now managed in the WordPress plugin's Settings page and fetched over REST. The bot just needs to reach WordPress.",
+  "wordpress": {
+    "url": "https://www.shaunroot.net/wp-json/umack/v1",
+    "api_key": "paste_the_key_generated_on_the_plugin_settings_page"
+  },
+  "prompt_file": "prompt.txt",
+  "state_file": "state/umack-state.json",
+  "log_file": "logs/um-ackshually.log"
+}

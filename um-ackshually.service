@@ -1,0 +1,22 @@
+[Unit]
+Description=um-ackshually Reddit comment responder bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/um-ackshually
+ExecStart=/usr/bin/php /home/ubuntu/um-ackshually/um_ackshually_bot.php
+Restart=always
+RestartSec=10
+# Give the bot time to finish an in-flight cycle on stop/restart (it traps SIGTERM).
+TimeoutStopSec=30
+# The bot writes logs/um-ackshually.log itself; stdout/stderr go to the journal
+# (journalctl -u um-ackshually). Appending both to the same file double-logged
+# every line and let systemd create the file as root before the bot could.
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
