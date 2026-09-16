@@ -3,7 +3,7 @@
 Responds to frequently asked questions.
 
 Bot account: **u/smart-responder-robo-dude**. Companion WordPress plugin (owner front end)
-lives in its own repo and installs on **shaunroot.net** (blog 1 of the multisite).
+lives in its own repo and installs on wordpress install.
 
 ## Layout
 
