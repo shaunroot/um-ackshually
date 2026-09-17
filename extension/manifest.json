@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "um-ackshually",
+  "version": "1.0.0",
+  "description": "Auto-replies to unread Reddit inbox items using the um-ackshually WordPress plugin for the prompt, the OpenAI call, and the history.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://old.reddit.com/*",
+    "https://www.shaunroot.net/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://old.reddit.com/message/unread*",
+        "https://old.reddit.com/message/inbox*",
+        "https://old.reddit.com/message/comments*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "action": {
+    "default_title": "um-ackshually options"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "um-ackshually@shaunroot.net",
+      "strict_min_version": "115.0"
+    }
+  }
+}

@@ -22,3 +22,6 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/
+
+# Legacy daemon leftovers (not used by the extension)
+legacy/config.json

@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>um-ackshually options</title>
+<style>
+  body { font: 14px/1.5 system-ui, sans-serif; max-width: 560px; margin: 32px auto; padding: 0 16px; color: #222; }
+  label { display: block; margin: 14px 0 4px; font-weight: 600; }
+  input[type=text], input[type=password], input[type=number] { width: 100%; padding: 6px 8px; font: inherit; box-sizing: border-box; }
+  .row { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+  button { padding: 6px 14px; font: inherit; }
+  #status { margin-top: 12px; color: #060; }
+  small { color: #666; }
+</style></head>
+<body>
+<h2>um-ackshually</h2>
+<label for="wpUrl">WordPress REST base</label>
+<input type="text" id="wpUrl">
+<label for="apiKey">API key <small>(from the plugin's Settings page)</small></label>
+<input type="password" id="apiKey">
+<label for="delaySeconds">Seconds between replies</label>
+<input type="number" id="delaySeconds" min="5" max="600">
+<div class="row"><input type="checkbox" id="enabled"><label for="enabled" style="margin:0">Enabled (reply automatically when I open old.reddit.com's inbox)</label></div>
+<div class="row"><button id="save">Save</button><button id="clear">Forget replied history</button></div>
+<div id="status"></div>
+<p><small>Dry run is controlled on the WordPress Settings page ("Disable Reddit posting"). When it's on, the extension shows what it would post and posts nothing.</small></p>
+<script src="options.js"></script>
+</body></html>
