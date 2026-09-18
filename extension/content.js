@@ -133,9 +133,28 @@
     await wp(`/replies/${res.message_id}/posted`, { fullname: postedName });
     if (isInbox) await redditPost('/api/read_message', { id: it.fullname });
     await send({ type: 'markReplied', fullname: it.fullname });
-    if (it.el) { it.el.classList.remove('new'); it.el.style.outline = '2px solid #2a7'; }
+    if (it.el) { it.el.classList.remove('new'); it.el.style.outline = '2px solid #2a7'; showReply(it.el, posted, res.reply); }
     log('replied to', it.fullname, 'as', postedName);
     return 'ok';
+  }
+
+  // Put the freshly posted reply on the page, the way Reddit's own reply box does.
+  function showReply(el, posted, text) {
+    let html = posted.content || '';
+    if (!html) {
+      const esc = (t) => t.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      html = `<div class="thing comment" style="margin:8px 0 8px 20px;padding:6px 10px;border-left:3px solid #2a7;background:#f3fbf6">` +
+             `<p class="tagline" style="margin:0 0 4px;color:#555">${esc(me)} just now</p>` +
+             `<div class="md" style="white-space:pre-wrap">${esc(text)}</div></div>`;
+    }
+    let holder = el.querySelector(':scope > .child > .sitetable');
+    if (!holder) {
+      const child = el.querySelector(':scope > .child') || el.appendChild(Object.assign(document.createElement('div'), { className: 'child' }));
+      holder = child.appendChild(Object.assign(document.createElement('div'), { className: 'sitetable listing' }));
+    }
+    holder.insertAdjacentHTML('afterbegin', html);
+    const added = holder.firstElementChild;
+    if (added) { added.style.outline = '2px solid #2a7'; added.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
   }
 
   async function countdown(prefix) {
