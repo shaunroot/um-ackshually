@@ -117,8 +117,7 @@
     if (res.skip) { log('skipped', it.fullname, res.skip); await send({ type: 'markReplied', fullname: it.fullname }); return 'skip'; }
     if (res.dry_run) {
       log('DRY RUN, would reply to', it.fullname, ':\n' + res.reply);
-      if (it.el) it.el.style.outline = '2px dashed #e90';
-      await send({ type: 'markReplied', fullname: it.fullname });
+      if (it.el) it.el.style.outline = '2px dashed #e90';   // not marked replied: a real run can redo it
       status(`${label} dry run: reply for u/${it.author} logged, not posted (see console)`);
       return 'dry';
     }
