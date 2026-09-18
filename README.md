@@ -48,5 +48,5 @@ legacy/             the original API daemon, kept in case API access is ever gra
 - **Queue:** paste permalinks on the plugin's Comment Queue page in WordPress. They are
   worked through the next time the inbox page is opened.
 
-Dry run is controlled by "Disable Reddit posting" in the plugin's Settings: replies are logged
-to the browser console and the Conversations page, nothing is posted.
+**Dry run** is a checkbox in the extension's options: replies are generated and logged to the
+browser console and the Conversations page, but nothing is posted.

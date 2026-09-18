@@ -37,7 +37,7 @@
   const replied = new Set(settings.replied || []);
   const skipAuthors = new Set([me.toLowerCase(), 'automoderator', '[deleted]', '']);
   const isInbox = location.pathname.startsWith('/message/');
-  log('loaded on', location.pathname, '| logged in as:', me || '(nobody)', '| modhash:', uh ? 'found' : 'MISSING', '| enabled:', !!settings.enabled);
+  log('loaded on', location.pathname, '| logged in as:', me || '(nobody)', '| modhash:', uh ? 'found' : 'MISSING', '| enabled:', !!settings.enabled, '| dry run:', !!settings.dryRun);
 
   // ---------- helpers ----------
   function permalinkOf(el) {
@@ -112,6 +112,7 @@
     const res = await wp('/reply', {
       root: ctx.root, fullname: it.fullname, author: it.author, subreddit: it.subreddit,
       permalink: ctx.permalink, body: it.body, thread: ctx.thread, created_utc: it.created_utc,
+      dry_run: !!settings.dryRun,
     });
     if (res.error) { status(`error from WordPress: ${res.error}`); return 'error:' + res.error; }
     if (res.skip) { log('skipped', it.fullname, res.skip); await send({ type: 'markReplied', fullname: it.fullname }); return 'skip'; }

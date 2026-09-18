@@ -2,7 +2,7 @@ const api = globalThis.browser || globalThis.chrome;
 // Service worker: the only place that talks to WordPress. Content scripts can't
 // fetch cross-origin, but a worker with host_permissions can.
 
-const DEFAULTS = { wpUrl: 'https://www.shaunroot.net/wp-json/umack/v1', apiKey: '', enabled: false, delaySeconds: 20, replied: [] };
+const DEFAULTS = { wpUrl: 'https://www.shaunroot.net/wp-json/umack/v1', apiKey: '', enabled: false, dryRun: false, delaySeconds: 20, replied: [] };
 
 api.action.onClicked.addListener(() => api.runtime.openOptionsPage());
 

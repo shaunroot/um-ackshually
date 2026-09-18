@@ -18,8 +18,8 @@
 <label for="delaySeconds">Seconds between replies</label>
 <input type="number" id="delaySeconds" min="5" max="600">
 <div class="row"><input type="checkbox" id="enabled"><label for="enabled" style="margin:0">Enabled (reply automatically when I open old.reddit.com's inbox)</label></div>
+<div class="row"><input type="checkbox" id="dryRun"><label for="dryRun" style="margin:0">Dry run (generate and log replies, but do not post them to Reddit)</label></div>
 <div class="row"><button id="save">Save</button><button id="clear">Forget replied history</button></div>
 <div id="status"></div>
-<p><small>Dry run is controlled on the WordPress Settings page ("Disable Reddit posting"). When it's on, the extension shows what it would post and posts nothing.</small></p>
 <script src="options.js"></script>
 </body></html>
