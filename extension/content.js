@@ -1,4 +1,4 @@
-// Runs on old.reddit.com. Three ways a reply happens:
+// Runs on old.reddit.com (or www.reddit.com with the old layout). Three ways a reply happens:
 //   1. Inbox pages: every UNREAD item (comment reply or PM) is answered on load.
 //   2. Inbox pages: permalinks queued on the WordPress "Comment Queue" page are answered.
 //   3. Comment pages: an "um-ackshually reply" link on each comment answers that one on click.
@@ -37,6 +37,10 @@
   const replied = new Set(settings.replied || []);
   const skipAuthors = new Set([me.toLowerCase(), 'automoderator', '[deleted]', '']);
   const isInbox = location.pathname.startsWith('/message/');
+  if (!document.querySelector('.thing') && !document.querySelector('#header-bottom-right')) {
+    log('this page is not the old Reddit layout; set "Opt out of the redesign" in Reddit preferences or use old.reddit.com');
+    return;
+  }
   log('loaded on', location.pathname, '| logged in as:', me || '(nobody)', '| modhash:', uh ? 'found' : 'MISSING', '| enabled:', !!settings.enabled, '| dry run:', !!settings.dryRun);
 
   // ---------- helpers ----------
@@ -61,7 +65,7 @@
 
   // Fetch a comment permalink's JSON: post + ancestor chain + the target comment itself.
   async function fetchThread(permalink, targetFullname) {
-    const r = await fetch('https://old.reddit.com' + permalink.replace(/\/$/, '') + '.json?context=8&raw_json=1', { credentials: 'same-origin' });
+    const r = await fetch(location.origin + permalink.replace(/\/$/, '') + '.json?context=8&raw_json=1', { credentials: 'same-origin' });
     const j = await r.json();
     const post = j[0].data.children[0].data;
     const chain = []; let node = (j[1].data.children[0] || {}).data, target = null;
@@ -78,7 +82,7 @@
       return {
         root: 'pm:' + it.author,
         thread: `PRIVATE MESSAGE from u/${it.author}\nSUBJECT: ${it.subject}\n\nMESSAGE YOU ARE REPLYING TO:\n[u/${it.author}] ${it.body}`,
-        permalink: 'https://old.reddit.com/message/messages/' + it.fullname.slice(3),
+        permalink: location.origin + '/message/messages/' + it.fullname.slice(3),
       };
     }
     let title = '', selftext = '', linkId = '', chain = [];
@@ -96,7 +100,7 @@
   }
 
   async function redditPost(path, form) {
-    const r = await fetch('https://old.reddit.com' + path, {
+    const r = await fetch(location.origin + path, {
       method: 'POST', credentials: 'same-origin',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ api_type: 'json', uh, ...form }).toString(),
