@@ -37,6 +37,7 @@
   const replied = new Set(settings.replied || []);
   const skipAuthors = new Set([me.toLowerCase(), 'automoderator', '[deleted]', '']);
   const isInbox = location.pathname.startsWith('/message/');
+  log('loaded on', location.pathname, '| logged in as:', me || '(nobody)', '| modhash:', uh ? 'found' : 'MISSING', '| enabled:', !!settings.enabled);
 
   // ---------- helpers ----------
   function permalinkOf(el) {
@@ -143,8 +144,10 @@
 
   // ---------- 3. comment pages: a reply link on every comment ----------
   if (!isInbox) {
-    if (!me || !uh) return;
-    for (const el of document.querySelectorAll('.thing.comment')) {
+    if (!me || !uh) { log('not logged in or no modhash, no reply links added'); return; }
+    const things = document.querySelectorAll('.thing.comment');
+    log(things.length, 'comments on page');
+    for (const el of things) {
       const buttons = el.querySelector('ul.flat-list.buttons');
       const it = itemFromThing(el);
       if (!buttons || !isPostable(it)) continue;
