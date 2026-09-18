@@ -144,7 +144,9 @@
 
   // Put the freshly posted reply on the page, the way Reddit's own reply box does.
   function showReply(el, posted, text) {
+    // Reddit's JSON entity-encodes the rendered comment; decode it like their own $.unsafe does.
     let html = posted.content || '';
+    if (html && /^\s*&lt;/.test(html)) { const t = document.createElement('textarea'); t.innerHTML = html; html = t.value; }
     if (!html) {
       const esc = (t) => t.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
       html = `<div class="thing comment" style="margin:8px 0 8px 20px;padding:6px 10px;border-left:3px solid #2a7;background:#f3fbf6">` +
