@@ -149,7 +149,11 @@
     for (const el of things) {
       const buttons = el.querySelector('ul.flat-list.buttons');
       const it = itemFromThing(el);
-      if (!buttons || !isPostable(it)) continue;
+      if (!buttons) { log('no button row on', it.fullname); continue; }
+      if (!isPostable(it)) {
+        log('no link for', it.fullname, 'by', it.author, ':', replied.has(it.fullname) ? 'in replied history' : 'author is skipped (self/AutoModerator/deleted)');
+        continue;
+      }
       const li = document.createElement('li'); const a = document.createElement('a');
       a.href = '#'; a.textContent = 'um-ackshually reply'; a.style.color = '#1b3a5c';
       a.onclick = async (e) => {
