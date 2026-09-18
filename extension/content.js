@@ -150,10 +150,8 @@
       const buttons = el.querySelector('ul.flat-list.buttons');
       const it = itemFromThing(el);
       if (!buttons) { log('no button row on', it.fullname); continue; }
-      if (!isPostable(it)) {
-        log('no link for', it.fullname, 'by', it.author, ':', replied.has(it.fullname) ? 'in replied history' : 'author is skipped (self/AutoModerator/deleted)');
-        continue;
-      }
+      // Manual clicks ignore local history; the server refuses real duplicates anyway.
+      if (!it.fullname || skipAuthors.has(it.author.toLowerCase())) { log('no link for', it.fullname, 'by', it.author, '(self/AutoModerator/deleted)'); continue; }
       const li = document.createElement('li'); const a = document.createElement('a');
       a.href = '#'; a.textContent = 'um-ackshually reply'; a.style.color = '#1b3a5c';
       a.onclick = async (e) => {
