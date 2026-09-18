@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "um-ackshually",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Auto-replies to unread Reddit inbox items using the um-ackshually WordPress plugin for the prompt, the OpenAI call, and the history.",
   "permissions": [
     "storage"
@@ -18,9 +18,10 @@
   "content_scripts": [
     {
       "matches": [
-        "https://old.reddit.com/message/unread*",
-        "https://old.reddit.com/message/inbox*",
-        "https://old.reddit.com/message/comments*"
+        "https://old.reddit.com/message/*",
+        "https://old.reddit.com/r/*/comments/*",
+        "https://old.reddit.com/comments/*",
+        "https://old.reddit.com/user/*"
       ],
       "js": [
         "content.js"

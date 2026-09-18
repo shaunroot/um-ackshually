@@ -8,7 +8,7 @@ api.action.onClicked.addListener(() => api.runtime.openOptionsPage());
 
 api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg && msg.type === 'wp') {
-    wpCall(msg.path, msg.body).then(sendResponse, (e) => sendResponse({ error: String(e && e.message || e) }));
+    wpCall(msg.path, msg.body, msg.method || 'POST').then(sendResponse, (e) => sendResponse({ error: String(e && e.message || e) }));
     return true; // async
   }
   if (msg && msg.type === 'openOptions') { api.runtime.openOptionsPage(); return; }
@@ -25,13 +25,13 @@ api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-async function wpCall(path, body) {
+async function wpCall(path, body, method) {
   const { wpUrl, apiKey } = await api.storage.local.get(DEFAULTS);
   if (!apiKey) return { error: 'No API key set in the extension options.' };
   const res = await fetch(wpUrl.replace(/\/$/, '') + path, {
-    method: 'POST',
+    method,
     headers: { 'Content-Type': 'application/json', 'X-UMACK-KEY': apiKey },
-    body: JSON.stringify(body || {}),
+    body: method === 'GET' ? undefined : JSON.stringify(body || {}),
   });
   const text = await res.text();
   let json;

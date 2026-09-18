@@ -37,8 +37,16 @@ legacy/             the original API daemon, kept in case API access is ever gra
 1. `about:debugging` -> This Firefox -> Load Temporary Add-on -> pick `extension/manifest.json`.
 2. `about:addons` -> the extension -> **Permissions** -> allow both sites. Nothing runs before.
 3. Extension options: paste the API key from the plugin's Settings page, tick **Enabled**, Save.
-4. Log in to old.reddit.com as the bot account and open `/message/unread`. A bar at the top
-   shows progress; **Stop** halts the run.
+4. Log in to old.reddit.com as the bot account.
+
+### Three ways to trigger a reply
+
+- **Inbox:** open `https://old.reddit.com/message/unread`. Every unread comment reply or
+  private message is answered. A bar at the top shows progress; **Stop** halts the run.
+- **Pick a comment:** on any old.reddit.com comment page, each comment has an
+  **um-ackshually reply** link in its button row. Click it and that comment is answered.
+- **Queue:** paste permalinks on the plugin's Comment Queue page in WordPress. They are
+  worked through the next time the inbox page is opened.
 
 Dry run is controlled by "Disable Reddit posting" in the plugin's Settings: replies are logged
 to the browser console and the Conversations page, nothing is posted.
