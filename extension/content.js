@@ -22,13 +22,21 @@
     text = document.createElement('span'); text.style.flex = '1';
     stopBtn = document.createElement('button'); stopBtn.textContent = 'Stop';
     stopBtn.style.cssText = 'font:inherit;padding:2px 10px';
-    stopBtn.onclick = () => { stopped = true; status('stopped by you'); };
+    stopBtn.onclick = () => { stopped = true; status('stopped by you'); dismiss(); };
     const opts = document.createElement('a'); opts.textContent = 'options'; opts.href = '#';
     opts.style.color = '#cde'; opts.onclick = (e) => { e.preventDefault(); send({ type: 'openOptions' }); };
     bar.append(text, stopBtn, opts); document.body.prepend(bar);
     document.body.style.paddingTop = '32px';
   }
   const status = (s) => { banner(); text.textContent = 'um-ackshually: ' + s; log(s); };
+  // Fade the bar away once a run is finished so it stops covering the page.
+  function dismiss() {
+    if (!bar) return;
+    setTimeout(() => {
+      bar.style.transition = 'opacity .6s'; bar.style.opacity = '0';
+      setTimeout(() => { bar.remove(); bar = null; document.body.style.paddingTop = ''; }, 700);
+    }, 2000);
+  }
 
   // ---------- page facts ----------
   const settings = await send({ type: 'settings' });
@@ -185,6 +193,7 @@
         const r = await answer(itemFromThing(el), '');
         a.textContent = r === 'ok' ? 'replied' : r === 'dry' ? 'dry run (see console)' : r === 'skip' ? 'skipped' : 'failed';
         if (r === 'ok' || r === 'dry') status(`done, replied to u/${it.author}`);
+        if (r !== 'stop' && !r.startsWith('error:')) dismiss();
       };
       li.append(a); buttons.append(li);
     }
@@ -203,7 +212,7 @@
   const queued = Array.isArray(queue) ? queue : [];
   if (queue && queue.error) log('queue fetch failed', queue.error);
 
-  if (!items.length && !queued.length) { status('nothing unread and nothing queued'); return; }
+  if (!items.length && !queued.length) { status('nothing unread and nothing queued'); dismiss(); return; }
   const total = items.length + queued.length;
   status(`${items.length} unread + ${queued.length} queued to answer`);
 
@@ -235,4 +244,5 @@
     if (r === 'ok' && n < total) await countdown(`(${n}/${total}) replied to u/${it.author}.`);
   }
   if (!stopped) status(`done, handled ${n} item${n === 1 ? '' : 's'}`);
+  dismiss();
 })();
